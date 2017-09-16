@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 
 class AccountsTest(APITestCase):
@@ -20,12 +21,16 @@ class AccountsTest(APITestCase):
         }
 
         response = self.client.post(self.create_url, data, format='json')
+        user = User.objects.latest('id')
+        token = Token.objects.get(user=user)
 
         self.assertEqual(User.objects.count(), 2)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['username'], data['username'])
         self.assertEqual(response.data['email'], data['email'])
         self.assertFalse('password' in response.data)
+
+        self.assertEqual(response.data['token'], token.key)
 
         def test_create_user_with_short_password(self):
             data = {
