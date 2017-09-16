@@ -1,2 +1,5 @@
-WEATHER_BASE_URL = 'api.weather.com'
+WEATHER_BASE_URL = 'twcservice.mybluemix.net'
+WEATHER_USERNAME = 'c08a9ee1-5844-4c1c-9224-65bb2f9a7846'
+WEATHER_PASSWORD = 'xQslQy0385'
 WEATHER_API_KEY = '626505b9091f4982a505b9091f798235'
+WEATHER_ALERTS_URL = 'https://'+WEATHER_USERNAME+':'+WEATHER_PASSWORD+'@'+WEATHER_BASE_URL+'/api/weather/v1/geocode/{}/{}/alerts.json?language=en-US'

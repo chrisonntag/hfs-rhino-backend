@@ -23,14 +23,10 @@ def update():
         region = WeatherRegion(lat, lng)
 
         if region.is_endangered():
-            data = region.parse()
+            data = region.prepare_information()
             db = KnowledgeBase()
-            return jsonify({
-                'endangered': True,
-                'type': data['type'],
-                'level': data['level'],
-                'instructions': db.get_instructions(data)
-            })
+
+            return jsonify(data)
         else:
             return jsonify({'endangered': False})
     except Exception as ex:
@@ -40,7 +36,9 @@ def update():
 if __name__ == '__main__':
     try:
         port = int(sys.argv[1])
+        host = '0.0.0.0'
     except Exception as e:
         port = 80
+        host = '0.0.0.0'
 
-    app.run(host='127.0.0.1', port=port, debug=True)
+    app.run(host=host, port=port, debug=True)
