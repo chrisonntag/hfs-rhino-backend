@@ -74,6 +74,7 @@ class WeatherRegion:
             alert_dict['event_desc'] = alert['event_desc']
             alert_dict['area_name'] = alert['area_name']
             alert_dict['severity'] = severity[alert['severity']]
+            alert_dict['severity_level'] = alert['severity_cd']
             alert_dict['source'] = alert['source']
             alert_dict['categories'] = []
             alert_dict['instructions'] = []
