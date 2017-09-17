@@ -15,22 +15,25 @@ def index():
     return jsonify({'message': 'Welcome to Rhino.', 'version': version, 'base_url': '%s/' % pre})
 
 
-@app.route('%s/update' % pre, methods=['POST'])
+@app.route('%s/update' % pre, methods=['POST', 'GET'])
 def update():
-    try:
-        lat = request.form['latitude']
-        lng = request.form['longitude']
-        region = WeatherRegion(lat, lng)
+    if request.method == 'POST':
+        try:
+            lat = request.form['latitude']
+            lng = request.form['longitude']
+            region = WeatherRegion(lat, lng)
 
-        if region.is_endangered():
-            data = region.prepare_information()
-            db = KnowledgeBase()
+            if region.is_endangered():
+                data = region.prepare_information()
+                db = KnowledgeBase()
 
-            return jsonify(data)
-        else:
-            return jsonify({'endangered': False})
-    except Exception as ex:
-        return jsonify({'error': str(ex), 'trace': traceback.format_exc()})
+                return jsonify(data)
+            else:
+                return jsonify({'endangered': False})
+        except Exception as ex:
+            return jsonify({'error': str(ex), 'trace': traceback.format_exc()})
+    else:
+        return jsonify({'required_fields': ['latitude', 'longitude'], 'required_method': 'POST'})
 
 
 if __name__ == '__main__':
